@@ -8,6 +8,7 @@ pub trait Point3d {
     fn getz(&self) -> f64;
 }
 
+#[derive(Copy, Clone)]
 pub struct Pointxy {
     x_coord: f64,
     y_coord: f64,
@@ -25,6 +26,8 @@ impl Point2d for Pointxy {
         return self.y_coord;
     }
 }
+
+#[derive(Copy, Clone)]
 pub struct Pointz {
     x_coord: f64,
     y_coord: f64,
@@ -59,6 +62,7 @@ impl Point3d for Pointz {
     }
 }
 #[allow(dead_code)]
+#[derive(Copy, Clone)]
 pub struct Pointm {
     x_coord: f64,
     y_coord: f64,
@@ -82,6 +86,7 @@ impl Point2d for Pointm {
     }
 }
 #[allow(dead_code)]
+#[derive(Copy, Clone)]
 pub struct Pointzm {
     x_coord: f64,
     y_coord: f64,
@@ -144,4 +149,52 @@ pub fn equal3d(point1: &impl Point3d, point2: &impl Point3d) -> bool {
     } else {
         false
     }
+}
+
+pub fn compare2d(point1: &impl Point2d, point2: &impl Point2d) -> i64 {
+    if point1.getx() > point2.getx() {
+        return 0;
+    } else if point1.getx() < point2.getx() {
+        return 1;
+    } else {
+        if point1.gety() > point2.gety() {
+            return 0;
+        } else if point1.gety() < point2.gety() {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+}
+
+pub fn compare3d(point1: &impl Point3d, point2: &impl Point3d) -> i64 {
+    if point1.getx() > point2.getx() {
+        return 0;
+    } else if point1.getx() < point2.getx() {
+        return 1;
+    } else {
+        if point1.gety() > point2.gety() {
+            return 0;
+        } else if point1.gety() < point2.gety() {
+            return 1;
+        } else {
+            if point1.getz() > point2.getz() {
+                return 0;
+            } else if point1.getz() < point2.getz() {
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+    }
+}
+
+pub fn manhattan_dist2d(point1: &impl Point2d, point2: &impl Point2d) -> f64 {
+    (point1.getx() - point2.getx()).abs() + (point1.gety() - point2.gety()).abs()
+}
+
+pub fn manhattan_dist3d(point1: &impl Point3d, point2: &impl Point3d) -> f64 {
+    (point1.getx() - point2.getx()).abs()
+        + (point1.gety() - point2.gety()).abs()
+        + (point1.getz() - point2.getz()).abs()
 }
