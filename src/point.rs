@@ -1,8 +1,11 @@
 pub trait Point2d {
-    fn cast_to_2d(self) -> Pointxy;
+    fn getx(self) -> f64;
+    fn gety(self) -> f64;
 }
 pub trait Point3d {
-    fn cast_to_3d(self) -> Pointz;
+    fn getx(self) -> f64;
+    fn gety(self) -> f64;
+    fn getz(self) -> f64;
 }
 
 pub struct Pointxy {
@@ -13,13 +16,13 @@ impl Pointxy {
     pub fn new(x_coord: f64, y_coord: f64) -> Pointxy {
         Pointxy { x_coord, y_coord }
     }
-    pub fn dist2d(&self, point2: &Pointxy) -> f64 {
-        ((self.x_coord - point2.x_coord).powi(2) + (self.y_coord - point2.y_coord).powi(2)).sqrt()
-    }
 }
 impl Point2d for Pointxy {
-    fn cast_to_2d(self) -> Pointxy {
-        return self;
+    fn getx(self) -> f64 {
+        return self.x_coord;
+    }
+    fn gety(self) -> f64 {
+        return self.y_coord;
     }
 }
 pub struct Pointz {
@@ -35,22 +38,24 @@ impl Pointz {
             z_coord,
         }
     }
-    pub fn dist3d(&self, point2: &Pointz) -> f64 {
-        ((self.x_coord - point2.x_coord).powi(2)
-            + (self.y_coord - point2.y_coord).powi(2)
-            + (self.z_coord - point2.z_coord).powi(2))
-        .sqrt()
-    }
 }
 impl Point2d for Pointz {
-    fn cast_to_2d(self) -> Pointxy {
-        let new_point = Pointxy::new(self.x_coord, self.y_coord);
-        return new_point;
+    fn getx(self) -> f64 {
+        return self.x_coord;
+    }
+    fn gety(self) -> f64 {
+        return self.y_coord;
     }
 }
 impl Point3d for Pointz {
-    fn cast_to_3d(self) -> Pointz {
-        return self;
+    fn getx(self) -> f64 {
+        return self.x_coord;
+    }
+    fn gety(self) -> f64 {
+        return self.y_coord;
+    }
+    fn getz(self) -> f64 {
+        return self.z_coord;
     }
 }
 #[allow(dead_code)]
@@ -69,9 +74,11 @@ impl Pointm {
     }
 }
 impl Point2d for Pointm {
-    fn cast_to_2d(self) -> Pointxy {
-        let new_point = Pointxy::new(self.x_coord, self.y_coord);
-        return new_point;
+    fn getx(self) -> f64 {
+        return self.x_coord;
+    }
+    fn gety(self) -> f64 {
+        return self.y_coord;
     }
 }
 #[allow(dead_code)]
@@ -92,24 +99,31 @@ impl Pointzm {
     }
 }
 impl Point2d for Pointzm {
-    fn cast_to_2d(self) -> Pointxy {
-        let new_point = Pointxy::new(self.x_coord, self.y_coord);
-        return new_point;
+    fn getx(self) -> f64 {
+        return self.x_coord;
+    }
+    fn gety(self) -> f64 {
+        return self.y_coord;
     }
 }
 impl Point3d for Pointzm {
-    fn cast_to_3d(self) -> Pointz {
-        let new_point = Pointz::new(self.x_coord, self.y_coord, self.z_coord);
-        return new_point;
+    fn getx(self) -> f64 {
+        return self.x_coord;
+    }
+    fn gety(self) -> f64 {
+        return self.y_coord;
+    }
+    fn getz(self) -> f64 {
+        return self.z_coord;
     }
 }
 
-pub fn dist2d(point1: &Pointxy, point2: &Pointxy) -> f64 {
-    ((point1.x_coord - point2.x_coord).powi(2) + (point1.y_coord - point2.y_coord).powi(2)).sqrt()
+pub fn dist2d(point1: &impl Point2d, point2: &impl Point2d) -> f64 {
+    ((point1.getx() - point2.getx()).powi(2) + (point1.gety() - point2.gety()).powi(2)).sqrt()
 }
-pub fn dist3d(point1: &Pointz, point2: &Pointz) -> f64 {
-    ((point1.x_coord - point2.x_coord).powi(2)
-        + (point1.y_coord - point2.y_coord).powi(2)
-        + (point1.z_coord - point2.z_coord).powi(2))
+pub fn dist3d(point1: &impl Point3d, point2: &impl Point3d) -> f64 {
+    ((point1.getx() - point2.getx()).powi(2)
+        + (point1.gety() - point2.gety()).powi(2)
+        + (point1.getz() - point2.getz()).powi(2))
     .sqrt()
 }
