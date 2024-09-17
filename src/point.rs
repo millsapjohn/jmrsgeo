@@ -127,3 +127,21 @@ pub fn dist3d(point1: &impl Point3d, point2: &impl Point3d) -> f64 {
         + (point1.getz() - point2.getz()).powi(2))
     .sqrt()
 }
+pub fn equal2d(point1: &impl Point2d, point2: &impl Point2d) -> bool {
+    if point1.getx() == point2.getx() && point1.gety() == point2.gety() {
+        true
+    } else {
+        false
+    }
+}
+
+pub fn equal3d(point1: &impl Point3d, point2: &impl Point3d) -> bool {
+    if point1.getx() == point2.getx()
+        && point1.gety() == point2.gety()
+        && point1.getz() == point2.getz()
+    {
+        true
+    } else {
+        false
+    }
+}
