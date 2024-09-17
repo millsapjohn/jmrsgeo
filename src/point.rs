@@ -1,3 +1,5 @@
+use crate::line::*;
+
 pub trait Point2d {
     fn getx(&self) -> f64;
     fn gety(&self) -> f64;
@@ -197,4 +199,19 @@ pub fn manhattan_dist3d(point1: &impl Point3d, point2: &impl Point3d) -> f64 {
     (point1.getx() - point2.getx()).abs()
         + (point1.gety() - point2.gety()).abs()
         + (point1.getz() - point2.getz()).abs()
+}
+
+pub fn dist2segment(point: &impl Point2d, segment: &impl Segment2d) -> f64 {
+    let a_coeff: f64 = segment.geta();
+    let b_coeff: Option<f64> = segment.getb();
+    let c_coeff: f64 = segment.getc();
+    let x_coord: f64 = point.getx();
+    let y_coord: f64 = point.gety();
+    let dist = if b_coeff == None {
+        (x_coord - c_coeff).abs()
+    } else {
+        ((a_coeff * x_coord) + (b_coeff.unwrap() * y_coord) + c_coeff).abs()
+            / (a_coeff.powi(2) + b_coeff.unwrap().powi(2)).sqrt()
+    };
+    return dist;
 }

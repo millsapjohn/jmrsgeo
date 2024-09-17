@@ -4,7 +4,7 @@ pub trait Segment2d {
     fn get_start(&self) -> Pointxy;
     fn get_end(&self) -> Pointxy;
     fn geta(&self) -> f64;
-    fn getb(&self) -> f64;
+    fn getb(&self) -> Option<f64>;
     fn getc(&self) -> f64;
     fn getlen2d(&self) -> f64;
 }
@@ -14,16 +14,16 @@ pub struct Segmentxy {
     start: Pointxy,
     end: Pointxy,
     a_coeff: f64,
-    b_coeff: f64,
+    b_coeff: Option<f64>,
     c_coeff: f64,
     len2d: f64,
 }
 
 impl Segmentxy {
     pub fn new(start: &impl Point2d, end: &impl Point2d) -> Segmentxy {
-        let coeffs: (f64, f64, f64) = get_linear_eq(start, end);
+        let coeffs: (f64, Option<f64>, f64) = get_linear_eq(start, end);
         let a_coeff: f64 = coeffs.0;
-        let b_coeff: f64 = coeffs.1;
+        let b_coeff: Option<f64> = coeffs.1;
         let c_coeff: f64 = coeffs.2;
         return Segmentxy {
             start: Pointxy::new(start.getx(), start.gety()),
@@ -46,7 +46,7 @@ impl Segment2d for Segmentxy {
     fn geta(&self) -> f64 {
         return self.a_coeff;
     }
-    fn getb(&self) -> f64 {
+    fn getb(&self) -> Option<f64> {
         return self.b_coeff;
     }
     fn getc(&self) -> f64 {
@@ -63,7 +63,7 @@ pub struct Segmentz {
     start: Pointz,
     end: Pointz,
     a_coeff: f64,
-    b_coeff: f64,
+    b_coeff: Option<f64>,
     c_coeff: f64,
     len2d: f64,
     len3d: f64,
@@ -71,7 +71,7 @@ pub struct Segmentz {
 
 impl Segmentz {
     pub fn new(start: &(impl Point3d + Point2d), end: &(impl Point3d + Point2d)) -> Segmentz {
-        let coeffs: (f64, f64, f64) = get_linear_eq(start, end);
+        let coeffs: (f64, Option<f64>, f64) = get_linear_eq(start, end);
         let a_coeff = coeffs.0;
         let b_coeff = coeffs.1;
         let c_coeff = coeffs.2;
@@ -101,7 +101,7 @@ impl Segment2d for Segmentz {
     fn geta(&self) -> f64 {
         return self.a_coeff;
     }
-    fn getb(&self) -> f64 {
+    fn getb(&self) -> Option<f64> {
         return self.b_coeff;
     }
     fn getc(&self) -> f64 {
@@ -112,12 +112,16 @@ impl Segment2d for Segmentz {
     }
 }
 
-pub fn get_linear_eq(point1: &impl Point2d, point2: &impl Point2d) -> (f64, f64, f64) {
+pub fn get_linear_eq(point1: &impl Point2d, point2: &impl Point2d) -> (f64, Option<f64>, f64) {
     match equal2d(point1, point2) {
         true => panic!("points are coincident, cannot create segment"),
         false => {
-            let slope: f64 = (point2.gety() - point1.gety()) / (point2.getx() - point1.getx());
-            let c_coeff: f64 = point1.gety() - (slope * point1.getx());
+            let slope = if point1.getx() == point2.getx() {
+                None
+            } else {
+                Some(point2.gety() - point1.gety() / (point2.getx() - point1.getx()))
+            };
+            let c_coeff: f64 = point1.gety() - (slope.unwrap() * point1.getx());
             return (1.0, slope, c_coeff);
         }
     }
