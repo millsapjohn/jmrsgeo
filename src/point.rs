@@ -1,11 +1,11 @@
 pub trait Point2d {
-    fn getx(self) -> f64;
-    fn gety(self) -> f64;
+    fn getx(&self) -> f64;
+    fn gety(&self) -> f64;
 }
 pub trait Point3d {
-    fn getx(self) -> f64;
-    fn gety(self) -> f64;
-    fn getz(self) -> f64;
+    fn getx(&self) -> f64;
+    fn gety(&self) -> f64;
+    fn getz(&self) -> f64;
 }
 
 pub struct Pointxy {
@@ -18,10 +18,10 @@ impl Pointxy {
     }
 }
 impl Point2d for Pointxy {
-    fn getx(self) -> f64 {
+    fn getx(&self) -> f64 {
         return self.x_coord;
     }
-    fn gety(self) -> f64 {
+    fn gety(&self) -> f64 {
         return self.y_coord;
     }
 }
@@ -40,21 +40,21 @@ impl Pointz {
     }
 }
 impl Point2d for Pointz {
-    fn getx(self) -> f64 {
+    fn getx(&self) -> f64 {
         return self.x_coord;
     }
-    fn gety(self) -> f64 {
+    fn gety(&self) -> f64 {
         return self.y_coord;
     }
 }
 impl Point3d for Pointz {
-    fn getx(self) -> f64 {
+    fn getx(&self) -> f64 {
         return self.x_coord;
     }
-    fn gety(self) -> f64 {
+    fn gety(&self) -> f64 {
         return self.y_coord;
     }
-    fn getz(self) -> f64 {
+    fn getz(&self) -> f64 {
         return self.z_coord;
     }
 }
@@ -74,10 +74,10 @@ impl Pointm {
     }
 }
 impl Point2d for Pointm {
-    fn getx(self) -> f64 {
+    fn getx(&self) -> f64 {
         return self.x_coord;
     }
-    fn gety(self) -> f64 {
+    fn gety(&self) -> f64 {
         return self.y_coord;
     }
 }
@@ -99,21 +99,21 @@ impl Pointzm {
     }
 }
 impl Point2d for Pointzm {
-    fn getx(self) -> f64 {
+    fn getx(&self) -> f64 {
         return self.x_coord;
     }
-    fn gety(self) -> f64 {
+    fn gety(&self) -> f64 {
         return self.y_coord;
     }
 }
 impl Point3d for Pointzm {
-    fn getx(self) -> f64 {
+    fn getx(&self) -> f64 {
         return self.x_coord;
     }
-    fn gety(self) -> f64 {
+    fn gety(&self) -> f64 {
         return self.y_coord;
     }
-    fn getz(self) -> f64 {
+    fn getz(&self) -> f64 {
         return self.z_coord;
     }
 }
