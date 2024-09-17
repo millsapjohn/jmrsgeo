@@ -114,7 +114,7 @@ impl Segment2d for Segmentz {
 
 pub fn get_linear_eq(point1: &impl Point2d, point2: &impl Point2d) -> (f64, f64, f64) {
     match equal2d(point1, point2) {
-        true => return (0.0, 0.0, 0.0),
+        true => panic!("points are coincident, cannot create segment"),
         false => {
             let slope: f64 = (point2.gety() - point1.gety()) / (point2.getx() - point1.getx());
             let c_coeff: f64 = point1.gety() - (slope * point1.getx());
