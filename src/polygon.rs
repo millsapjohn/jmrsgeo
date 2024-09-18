@@ -7,12 +7,18 @@ pub struct Polygon {
 
 impl Polygon {
     pub fn new(points: Vec<Point>) -> Polygon {
-        // TODO: implement type casting
         // TODO: implement validity check
         // TODO: add first point to end of vec
         return Polygon { points, area: None };
     }
+    pub fn getcentroid(&self) -> Point {
+        return;
+    }
+    pub fn getarea(&self) -> Option<f64> {
+        return self.area;
+    }
 }
 
-// TODO: setarea method
-// TODO: area function
+pub fn calcarea(polygon: &Polygon) -> f64 {
+    return;
+}
