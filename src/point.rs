@@ -1,140 +1,47 @@
 use crate::line::*;
 
-pub trait Point2d {
-    fn getx(&self) -> f64;
-    fn gety(&self) -> f64;
-}
-pub trait Point3d {
-    fn getx(&self) -> f64;
-    fn gety(&self) -> f64;
-    fn getz(&self) -> f64;
-}
+// TODO: refactor to use a single struct with optional fields
 
 #[derive(Copy, Clone)]
-pub struct Pointxy {
+pub struct Point {
     x_coord: f64,
     y_coord: f64,
+    z_coord: Option<f64>,
+    m_coord: Option<f64>,
 }
-impl Pointxy {
-    pub fn new(x_coord: f64, y_coord: f64) -> Pointxy {
-        Pointxy { x_coord, y_coord }
-    }
-}
-impl Point2d for Pointxy {
-    fn getx(&self) -> f64 {
-        return self.x_coord;
-    }
-    fn gety(&self) -> f64 {
-        return self.y_coord;
-    }
-}
-
-#[derive(Copy, Clone)]
-pub struct Pointz {
-    x_coord: f64,
-    y_coord: f64,
-    z_coord: f64,
-}
-impl Pointz {
-    pub fn new(x_coord: f64, y_coord: f64, z_coord: f64) -> Pointz {
-        Pointz {
-            x_coord,
-            y_coord,
-            z_coord,
-        }
-    }
-}
-impl Point2d for Pointz {
-    fn getx(&self) -> f64 {
-        return self.x_coord;
-    }
-    fn gety(&self) -> f64 {
-        return self.y_coord;
-    }
-}
-impl Point3d for Pointz {
-    fn getx(&self) -> f64 {
-        return self.x_coord;
-    }
-    fn gety(&self) -> f64 {
-        return self.y_coord;
-    }
-    fn getz(&self) -> f64 {
-        return self.z_coord;
-    }
-}
-#[allow(dead_code)]
-#[derive(Copy, Clone)]
-pub struct Pointm {
-    x_coord: f64,
-    y_coord: f64,
-    m_coord: f64,
-}
-impl Pointm {
-    pub fn new(x_coord: f64, y_coord: f64, m_coord: f64) -> Pointm {
-        Pointm {
-            x_coord,
-            y_coord,
-            m_coord,
-        }
-    }
-}
-impl Point2d for Pointm {
-    fn getx(&self) -> f64 {
-        return self.x_coord;
-    }
-    fn gety(&self) -> f64 {
-        return self.y_coord;
-    }
-}
-#[allow(dead_code)]
-#[derive(Copy, Clone)]
-pub struct Pointzm {
-    x_coord: f64,
-    y_coord: f64,
-    z_coord: f64,
-    m_coord: f64,
-}
-impl Pointzm {
-    pub fn new(x_coord: f64, y_coord: f64, z_coord: f64, m_coord: f64) -> Pointzm {
-        Pointzm {
+impl Point {
+    pub fn new(x_coord: f64, y_coord: f64, z_coord: Option<f64>, m_coord: Option<f64>) -> Point {
+        Point {
             x_coord,
             y_coord,
             z_coord,
             m_coord,
         }
     }
-}
-impl Point2d for Pointzm {
-    fn getx(&self) -> f64 {
+    pub fn getx(&self) -> f64 {
         return self.x_coord;
     }
-    fn gety(&self) -> f64 {
+    pub fn gety(&self) -> f64 {
         return self.y_coord;
     }
-}
-impl Point3d for Pointzm {
-    fn getx(&self) -> f64 {
-        return self.x_coord;
+    pub fn getz(&self) -> f64 {
+        return self.z_coord.expect("no z coordinate");
     }
-    fn gety(&self) -> f64 {
-        return self.y_coord;
-    }
-    fn getz(&self) -> f64 {
-        return self.z_coord;
+    pub fn getm(&self) -> f64 {
+        return self.m_coord.expect("no m coordinate");
     }
 }
 
-pub fn dist2d(point1: &impl Point2d, point2: &impl Point2d) -> f64 {
+pub fn dist2d(point1: &Point, point2: &Point) -> f64 {
     ((point1.getx() - point2.getx()).powi(2) + (point1.gety() - point2.gety()).powi(2)).sqrt()
 }
-pub fn dist3d(point1: &impl Point3d, point2: &impl Point3d) -> f64 {
+pub fn dist3d(point1: &Point, point2: &Point) -> f64 {
     ((point1.getx() - point2.getx()).powi(2)
         + (point1.gety() - point2.gety()).powi(2)
         + (point1.getz() - point2.getz()).powi(2))
     .sqrt()
 }
-pub fn equal2d(point1: &impl Point2d, point2: &impl Point2d) -> bool {
+pub fn equal2d(point1: &Point, point2: &Point) -> bool {
     if point1.getx() == point2.getx() && point1.gety() == point2.gety() {
         true
     } else {
@@ -142,7 +49,7 @@ pub fn equal2d(point1: &impl Point2d, point2: &impl Point2d) -> bool {
     }
 }
 
-pub fn equal3d(point1: &impl Point3d, point2: &impl Point3d) -> bool {
+pub fn equal3d(point1: &Point, point2: &Point) -> bool {
     if point1.getx() == point2.getx()
         && point1.gety() == point2.gety()
         && point1.getz() == point2.getz()
@@ -153,7 +60,7 @@ pub fn equal3d(point1: &impl Point3d, point2: &impl Point3d) -> bool {
     }
 }
 
-pub fn compare2d(point1: &impl Point2d, point2: &impl Point2d) -> i64 {
+pub fn compare2d(point1: &Point, point2: &Point) -> i64 {
     if point1.getx() > point2.getx() {
         return 0;
     } else if point1.getx() < point2.getx() {
@@ -169,7 +76,7 @@ pub fn compare2d(point1: &impl Point2d, point2: &impl Point2d) -> i64 {
     }
 }
 
-pub fn compare3d(point1: &impl Point3d, point2: &impl Point3d) -> i64 {
+pub fn compare3d(point1: &Point, point2: &Point) -> i64 {
     if point1.getx() > point2.getx() {
         return 0;
     } else if point1.getx() < point2.getx() {
@@ -191,17 +98,17 @@ pub fn compare3d(point1: &impl Point3d, point2: &impl Point3d) -> i64 {
     }
 }
 
-pub fn manhattan_dist2d(point1: &impl Point2d, point2: &impl Point2d) -> f64 {
+pub fn manhattan_dist2d(point1: &Point, point2: &Point) -> f64 {
     (point1.getx() - point2.getx()).abs() + (point1.gety() - point2.gety()).abs()
 }
 
-pub fn manhattan_dist3d(point1: &impl Point3d, point2: &impl Point3d) -> f64 {
+pub fn manhattan_dist3d(point1: &Point, point2: &Point) -> f64 {
     (point1.getx() - point2.getx()).abs()
         + (point1.gety() - point2.gety()).abs()
         + (point1.getz() - point2.getz()).abs()
 }
 
-pub fn dist2segment(point: &impl Point2d, segment: &impl Segment2d) -> f64 {
+pub fn dist2segment(point: &Point, segment: &Segment) -> f64 {
     let a_coeff: f64 = segment.geta();
     let b_coeff: Option<f64> = segment.getb();
     let c_coeff: f64 = segment.getc();
